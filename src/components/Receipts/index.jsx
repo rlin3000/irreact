@@ -1,0 +1,143 @@
+//引入connect用于连接UI组件与redux
+import { connect } from 'react-redux'
+
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
+import { login, logout } from '../../redux/actions/authActions';//done
+
+import { useGetReceiptsQuery } from '../../datamodel/rtkQuerySlice';
+
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import Button from '@mui/material/Button';
+
+import {
+  Avatar,
+  Card,
+  Container,
+  // ImageList,
+  // ImageListItem,
+  // ImageListItemBar,
+  Rating,
+  Tooltip,
+} from '@mui/material';
+import { StarBorder } from '@mui/icons-material';
+
+
+const Receipts = ({ isLoggedIn }) => {
+
+  useEffect(() => {
+
+    console.log('env ', process.env.NODE_ENV);
+    console.log('env ', process.env.REACT_APP_NOT_SECRET_CODE);
+  }, []);
+
+  // const [skip, setSkip] = React.useState(true)
+  const { data, error, isLoading, refetch, isUninitialized } = useGetReceiptsQuery(
+    undefined,
+    {
+      // pollingInterval: 3000,
+      // refetchOnMountOrArgChange: true,
+      skip: !isLoggedIn
+    }
+  );
+
+  const getUserReceipts = () => {
+    refetch();
+  }
+
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/login/', { replace: true });
+  };
+
+  if (!isLoggedIn) {
+    return <div>Not logged in yet and please <Button color="primary" onClick={handleLogin}>Log In</Button></div>
+  }
+
+  return (
+    <div>
+      {isLoggedIn ? (
+        <>
+          <div>
+            {isLoading ? (
+              <div>Loading...</div>
+            ) : error ?
+              (error.status === 401 ?
+                <div>Authentication expired, please <Button color="primary" onClick={handleLogin}>Log In</Button> again.</div> :
+                <div>Other error</div>)
+              : data ? (
+                <Container>
+                  <ImageList
+                    gap={12}
+                    sx={{
+                      mb: 8,
+                      gridTemplateColumns:
+                        'repeat(auto-fill, minmax(280px, 1fr))!important',
+                    }}
+                  >
+                    {data.obj.map((item) => (
+                      <Card key={item.id}>
+                        <ImageListItem sx={{ height: '100% !important' }}>
+                          <ImageListItemBar
+                            sx={{
+                              background:
+                                'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)',
+                            }}
+                            title={item.totalAmount === 0 ? 'Free Stay' : '$' + item.totalAmount}
+                            actionIcon={
+                              <Tooltip title={item.companyName} sx={{ mr: '5px' }}>
+                                <Avatar src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`} />
+                              </Tooltip>
+                            }
+                            position="top"
+                          />
+                          <img
+                            src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
+                            alt={item.companyName}
+                            loading="lazy"
+                            style={{ cursor: 'pointer' }}
+                          />
+                          <ImageListItemBar
+                            title={item.companyName}
+                            actionIcon={
+                              <Rating
+                                sx={{ color: 'rgba(255,255,255, 0.8)', mr: '5px' }}
+                                name="item-rating"
+                                defaultValue={3.5}
+                                precision={0.5}
+                                emptyIcon={
+                                  <StarBorder sx={{ color: 'rgba(255,255,255, 0.8)' }} />
+                                }
+                              />
+                            }
+                          />
+                        </ImageListItem>
+                      </Card>
+                    ))}
+                  </ImageList>
+                </Container>
+              ) : null}
+          </div>
+        </>
+      ) : (
+        <>
+        </>
+      )}
+    </div>
+  )
+};
+
+const mapStateToProps = (state) => ({
+  isLoggedIn: state.authx.isLoggedIn
+});
+
+export default connect(mapStateToProps, {})(Receipts);
+

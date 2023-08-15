@@ -21,6 +21,7 @@ import {
   Avatar,
   Card,
   Container,
+  CardActionArea,
   // ImageList,
   // ImageListItem,
   // ImageListItemBar,
@@ -34,11 +35,8 @@ const Receipts = ({ isLoggedIn }) => {
 
   useEffect(() => {
 
-    console.log('env ', process.env.NODE_ENV);
-    console.log('env ', process.env.REACT_APP_NOT_SECRET_CODE);
   }, []);
 
-  // const [skip, setSkip] = React.useState(true)
   const { data, error, isLoading, refetch, isUninitialized } = useGetReceiptsQuery(
     undefined,
     {
@@ -62,6 +60,12 @@ const Receipts = ({ isLoggedIn }) => {
     return <div>Not logged in yet and please <Button color="primary" onClick={handleLogin}>Log In</Button></div>
   }
 
+  const onReceiptClick = (itemId) => {
+    console.log('Receipt Clicked');
+    navigate('/edit/', { state: { itemId }, replace: true });
+  };
+
+
   return (
     <div>
       {isLoggedIn ? (
@@ -84,43 +88,47 @@ const Receipts = ({ isLoggedIn }) => {
                     }}
                   >
                     {data.obj.map((item) => (
-                      <Card key={item.id}>
-                        <ImageListItem sx={{ height: '100% !important' }}>
-                          <ImageListItemBar
-                            sx={{
-                              background:
-                                'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)',
-                            }}
-                            title={item.totalAmount === 0 ? 'Free Stay' : '$' + item.totalAmount}
-                            actionIcon={
-                              <Tooltip title={item.companyName} sx={{ mr: '5px' }}>
-                                <Avatar src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`} />
-                              </Tooltip>
-                            }
-                            position="top"
-                          />
-                          <img
-                            src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
-                            alt={item.companyName}
-                            loading="lazy"
-                            style={{ cursor: 'pointer' }}
-                          />
-                          <ImageListItemBar
-                            title={item.companyName}
-                            actionIcon={
-                              <Rating
-                                sx={{ color: 'rgba(255,255,255, 0.8)', mr: '5px' }}
-                                name="item-rating"
-                                defaultValue={3.5}
-                                precision={0.5}
-                                emptyIcon={
-                                  <StarBorder sx={{ color: 'rgba(255,255,255, 0.8)' }} />
-                                }
-                              />
-                            }
-                          />
-                        </ImageListItem>
-                      </Card>
+                      <CardActionArea key={item.id} component="a" onClick={() => onReceiptClick(item.id)}>
+
+                        <Card>
+                          <ImageListItem sx={{ height: '100% !important' }}>
+                            <ImageListItemBar
+                              sx={{
+                                background:
+                                  'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)',
+                              }}
+                              title={item.totalAmount === 0 ? 'Free Stay' : '$' + item.totalAmount}
+                              actionIcon={
+                                <Tooltip title={item.companyName} sx={{ mr: '5px' }}>
+                                  <Avatar src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`} />
+                                </Tooltip>
+                              }
+                              position="top"
+                            />
+                            <img
+                              src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
+                              alt={item.companyName}
+                              loading="lazy"
+                              style={{ cursor: 'pointer' }}
+                            />
+                            <ImageListItemBar
+                              title={item.companyName}
+                              actionIcon={
+                                <Rating
+                                  sx={{ color: 'rgba(255,255,255, 0.8)', mr: '5px' }}
+                                  name="item-rating"
+                                  defaultValue={3.5}
+                                  precision={0.5}
+                                  emptyIcon={
+                                    <StarBorder sx={{ color: 'rgba(255,255,255, 0.8)' }} />
+                                  }
+                                />
+                              }
+                            />
+                          </ImageListItem>
+                        </Card>
+                      </CardActionArea>
+
                     ))}
                   </ImageList>
                 </Container>

@@ -7,7 +7,7 @@ import Home from './components/Home';
 import Receipts from './components/Receipts';
 import Settings from './components/Settings';
 import Login from './components/Login';
-
+import EditReceipt from './components/Receipts/EditReceipt';
 
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -101,6 +101,7 @@ const App = ({ isLoggedIn, user, login, logout }) => {
         <Route path="/settings" element={<Settings />} />
         <Route path="/login" element={<Login />} />
         <Route path="/camera" element={<ImagePicker />} />
+        <Route path="/edit" element={<EditReceipt />} />
       </Routes>
 
       <BottomTabs />

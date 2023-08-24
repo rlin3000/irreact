@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom';
 export default function EditReceipt() {
 
   const navigate = useNavigate();
-  
+
   const location = useLocation();
 
   const item = location.state?.item;
@@ -52,8 +52,8 @@ export default function EditReceipt() {
     navigate('/receipts/', { replace: true });
   };
 
-  const [value, setValue] = React.useState(dayjs(item.receiptDatetime));
-  const [name, setName] = React.useState(item.companyName);
+  const [value, setValue] = React.useState(dayjs(item?.receiptDatetime));
+  const [name, setName] = React.useState(item?.companyName);
 
   return (
     <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -62,49 +62,54 @@ export default function EditReceipt() {
         <div>
           <Button onClick={handleConfirmClick}>Confirm</Button>
           <Button onClick={handleCancel}>Cancel</Button>
+          <div>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DemoContainer components={['DatePicker', 'DatePicker']}>
+                <DatePicker
+                  label="Purchase Date"
+                  value={value}
+                  onChange={(newValue) => setValue(newValue)}
+                />
+              </DemoContainer>
+            </LocalizationProvider>
+            <FormControl fullWidth sx={{ m: 1 }}>
+              <InputLabel htmlFor="outlined-adornment-amount">Total Amount</InputLabel>
+              <OutlinedInput
+                id="outlined-adornment-amount"
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                label="TotalAmount"
+                defaultValue={item.totalAmount}
+              />
+            </FormControl>
+            <TextField
+              id="outlined-controlled"
+              label="Shop/Vendor"
+              value={name}
+              onChange={(event) => {
+                setName(event.target.value);
+              }}
+            />
+            <Card>
+              <ImageListItem sx={{ height: '100% !important' }}>
+                <img
+                  src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
+                  alt={item.companyName}
+                  loading="lazy"
+                  style={{ cursor: 'pointer' }}
+                />
+              </ImageListItem>
+            </Card>
+          </div>
         </div>
       ) : (
         // Render content when itemId is not available
-        <div>No receipt item selected.</div>
+        <div>
+          <h4>No receipt item selected.</h4>
+          <Button onClick={handleCancel}>Cancel</Button>
+
+        </div>
       )}
-      <div>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={['DatePicker', 'DatePicker']}>
-            <DatePicker
-              label="Purchase Date"
-              value={value}
-              onChange={(newValue) => setValue(newValue)}
-            />
-          </DemoContainer>
-        </LocalizationProvider>
-        <FormControl fullWidth sx={{ m: 1 }}>
-          <InputLabel htmlFor="outlined-adornment-amount">Total Amount</InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-amount"
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-            label="TotalAmount"
-            defaultValue={item.totalAmount}
-          />
-        </FormControl>
-        <TextField
-          id="outlined-controlled"
-          label="Shop/Vendor"
-          value={name}
-          onChange={(event) => {
-            setName(event.target.value);
-          }}
-        />
-        <Card>
-          <ImageListItem sx={{ height: '100% !important' }}>
-            <img
-              src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
-              alt={item.companyName}
-              loading="lazy"
-              style={{ cursor: 'pointer' }}
-            />
-          </ImageListItem>
-        </Card>
-      </div>
+
     </Box>
   );
 }

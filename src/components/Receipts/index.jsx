@@ -60,9 +60,9 @@ const Receipts = ({ isLoggedIn }) => {
     return <div>Not logged in yet and please <Button color="primary" onClick={handleLogin}>Log In</Button></div>
   }
 
-  const onReceiptClick = (itemId) => {
+  const onReceiptClick = (item) => {
     console.log('Receipt Clicked');
-    navigate('/edit/', { state: { itemId }, replace: true });
+    navigate('/edit/', { state: { item }, replace: true });
   };
 
 
@@ -88,7 +88,7 @@ const Receipts = ({ isLoggedIn }) => {
                     }}
                   >
                     {data.obj.map((item) => (
-                      <CardActionArea key={item.id} component="a" onClick={() => onReceiptClick(item.id)}>
+                      <CardActionArea key={item.id} component="a" onClick={() => onReceiptClick(item)}>
 
                         <Card>
                           <ImageListItem sx={{ height: '100% !important' }}>

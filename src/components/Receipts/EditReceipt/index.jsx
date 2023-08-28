@@ -45,14 +45,24 @@ export default function EditReceipt() {
   };
 
   const handleConfirmClick = async () => {
-    navigate('/receipts/', { replace: true });
+    console.log(`date is ${date} and receiptDate is ${dayjs(item?.receiptDatetime)}`);
+    console.log((date.isSame(dayjs(item?.receiptDatetime))));
+    console.log(`amount is ${amount} and receiptAmount is ${item?.totalAmount}`);
+    console.log((amount === item?.totalAmount));
+    console.log(`name is ${name} and receiptCompanyName is ${item?.companyName}`);
+    console.log((name === item?.companyName));
+
+    if ((date.isSame(dayjs(item?.receiptDatetime))) && amount === item?.totalAmount && name === item?.companyName) {
+      navigate('/receipts/', { replace: true });
+    }
   };
 
   const handleCancel = async () => {
     navigate('/receipts/', { replace: true });
   };
 
-  const [value, setValue] = React.useState(dayjs(item?.receiptDatetime));
+  const [date, setDate] = React.useState(dayjs(item?.receiptDatetime));
+  const [amount, setAmount] = React.useState(item?.totalAmount);
   const [name, setName] = React.useState(item?.companyName);
 
   return (
@@ -67,8 +77,8 @@ export default function EditReceipt() {
               <DemoContainer components={['DatePicker', 'DatePicker']}>
                 <DatePicker
                   label="Purchase Date"
-                  value={value}
-                  onChange={(newValue) => setValue(newValue)}
+                  value={date}
+                  onChange={(newValue) => setDate(newValue)}
                 />
               </DemoContainer>
             </LocalizationProvider>
@@ -78,7 +88,10 @@ export default function EditReceipt() {
                 id="outlined-adornment-amount"
                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                 label="TotalAmount"
-                defaultValue={item.totalAmount}
+                defaultValue={amount}
+                onChange={(event) => {
+                  setAmount(event.target.value);
+                }}
               />
             </FormControl>
             <TextField
@@ -95,7 +108,7 @@ export default function EditReceipt() {
                   src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
                   alt={item.companyName}
                   loading="lazy"
-                  style={{ cursor: 'pointer' }}
+                // style={{ cursor: 'pointer' }}
                 />
               </ImageListItem>
             </Card>

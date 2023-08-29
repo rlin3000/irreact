@@ -51,10 +51,25 @@ export default function EditReceipt() {
     console.log((amount === item?.totalAmount));
     console.log(`name is ${name} and receiptCompanyName is ${item?.companyName}`);
     console.log((name === item?.companyName));
-
-    if ((date.isSame(dayjs(item?.receiptDatetime))) && amount === item?.totalAmount && name === item?.companyName) {
-      navigate('/receipts/', { replace: true });
+    let a = {
+      receiptDatetime: date.format('YYYY-MM-DD[T]hh:mm:ss'),
+      totalAmount: amount * 1,
+      companyName: name
     }
+    // console.log({...item, 
+    //   receiptDatetime: item.receiptDatetime,
+    //   totalAmount: item.totalAmount,
+    //   companyName: item.companyName
+    // });
+    console.log(item);
+    console.log(a);
+    console.log({...item, 
+      ...a
+    });
+
+    // if ((date.isSame(dayjs(item?.receiptDatetime))) && amount === item?.totalAmount && name === item?.companyName) {
+    //   navigate('/receipts/', { replace: true });
+    // }
   };
 
   const handleCancel = async () => {

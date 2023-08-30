@@ -25,10 +25,17 @@ export const api = createApi({
     getReceipts: builder.query({
       query: () => '/Receipt/GetReceipts',
     }),
+    updateReceipt: builder.mutation({
+      query: (receiptData) => ({
+        url: '/Receipt/UpdateReceipt',
+        method: 'POST',
+        body: receiptData,
+      }),
+    }),
   }),
 });
 
-export const { useGetReceiptsQuery } = api;
+export const { useGetReceiptsQuery, useUpdateReceiptMutation } = api;
 
 
 

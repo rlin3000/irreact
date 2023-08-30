@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
 
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
@@ -26,9 +26,15 @@ import {
   // ImageListItemBar,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import { useUpdateReceiptMutation } from '../../../datamodel/rtkQuerySlice';
+import { CircularProgress, Modal } from '@mui/material';
+import './ReceiptUpdateComponent.css';
 
 export default function EditReceipt() {
+
+  const [updateReceipt, { data, error, isLoading, isSuccess, isError }] = useUpdateReceiptMutation();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,32 +50,44 @@ export default function EditReceipt() {
     event.preventDefault();
   };
 
-  const handleConfirmClick = async () => {
+  const handleConfirmClick = () => {
     console.log(`date is ${date} and receiptDate is ${dayjs(item?.receiptDatetime)}`);
     console.log((date.isSame(dayjs(item?.receiptDatetime))));
     console.log(`amount is ${amount} and receiptAmount is ${item?.totalAmount}`);
     console.log((amount === item?.totalAmount));
     console.log(`name is ${name} and receiptCompanyName is ${item?.companyName}`);
     console.log((name === item?.companyName));
-    let a = {
+    let modifiedData = {
       receiptDatetime: date.format('YYYY-MM-DD[T]hh:mm:ss'),
       totalAmount: amount * 1,
       companyName: name
     }
-    // console.log({...item, 
-    //   receiptDatetime: item.receiptDatetime,
-    //   totalAmount: item.totalAmount,
-    //   companyName: item.companyName
-    // });
-    console.log(item);
-    console.log(a);
-    console.log({...item, 
-      ...a
-    });
+    let receiptData = {
+      ...item,
+      ...modifiedData
+    };
+    console.log(receiptData);
 
-    // if ((date.isSame(dayjs(item?.receiptDatetime))) && amount === item?.totalAmount && name === item?.companyName) {
-    //   navigate('/receipts/', { replace: true });
-    // }
+    if ((date.isSame(dayjs(item?.receiptDatetime))) && amount === item?.totalAmount && name === item?.companyName) {
+      navigate('/receipts/', { replace: true });
+    } else {
+      updateReceipt(receiptData).unwrap().then(
+        () => {
+          setIsSuccessModalOpen(true);
+        }
+      ).catch((error) => {
+        setIsErrorModalOpen(true); // Open error modal
+      });
+    }
+  };
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false);
+  };
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+    navigate('/receipts/', { replace: true });
   };
 
   const handleCancel = async () => {
@@ -138,6 +156,27 @@ export default function EditReceipt() {
         </div>
       )}
 
+      <Modal open={isLoading}>
+        <div className="modal-content">
+          <CircularProgress />
+        </div>
+      </Modal>
+
+      <Modal open={isErrorModalOpen}>
+        <div className="modal-content">
+          <h2>Error</h2>
+          <p>{isError ? `${error.status} ${JSON.stringify(error.data)}` : 'An error occurred.'}</p>
+          <Button onClick={closeErrorModal}>Close</Button>
+        </div>
+      </Modal>
+
+      <Modal open={isSuccessModalOpen}>
+        <div className="modal-content">
+          <h2>Success</h2>
+          <p>'Receipt Updated Successfully'</p>
+          <Button onClick={closeSuccessModal}>Close</Button>
+        </div>
+      </Modal>
     </Box>
   );
 }

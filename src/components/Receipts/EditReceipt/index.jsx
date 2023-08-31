@@ -87,7 +87,7 @@ export default function EditReceipt() {
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate('/receipts/', { replace: true });
+    navigate('/receipts/', { state: { updateSuccess: true }, replace: true });
   };
 
   const handleCancel = async () => {

@@ -2,7 +2,7 @@
 import { connect } from 'react-redux'
 
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 import { login, logout } from '../../redux/actions/authActions';//done
@@ -33,9 +33,9 @@ import { StarBorder } from '@mui/icons-material';
 
 const Receipts = ({ isLoggedIn }) => {
 
-  useEffect(() => {
+  const location = useLocation();
 
-  }, []);
+  const updateSuccess = location.state?.updateSuccess;
 
   const { data, error, isLoading, refetch, isUninitialized } = useGetReceiptsQuery(
     undefined,
@@ -45,6 +45,13 @@ const Receipts = ({ isLoggedIn }) => {
       skip: !isLoggedIn
     }
   );
+
+  useEffect(() => {
+    if (updateSuccess) {
+      refetch();
+    }
+
+  }, []);
 
   const getUserReceipts = () => {
     refetch();

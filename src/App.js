@@ -20,6 +20,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import BottomTabs from './components/BottomTabs';
 import { login, logout } from './redux/actions/authActions'
 import ImagePicker from './components/Home/ImagePicker';
+import SignUp from './components/Signup';
 
 const App = ({ isLoggedIn, user, login, logout }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -102,6 +103,7 @@ const App = ({ isLoggedIn, user, login, logout }) => {
         <Route path="/login" element={<Login />} />
         <Route path="/camera" element={<ImagePicker />} />
         <Route path="/edit" element={<EditReceipt />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
 
       <BottomTabs />

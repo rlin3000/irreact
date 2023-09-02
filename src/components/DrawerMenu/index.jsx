@@ -2,25 +2,34 @@
 import { connect } from 'react-redux'
 
 import React from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+
 import { Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Link } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import { login, logout } from '../../redux/actions/authActions';
+import { login, logout, init } from '../../redux/actions/authActions';
 
-const DrawerMenu = ({ open, onClose, user, isLoggedIn, login, logout }) => {
+const DrawerMenu = ({ open, onClose, user, isLoggedIn, login, logout, init }) => {
 
-  const handleLogout = () => {
-    // Call the logout action
-    logout();
-    onClose();
+  const navigate = useNavigate();
+
+  const redirectToLogin = () => {
+    navigate('/login/', { replace: true });
   };
 
   const handleLogin = () => {
-    // Call the logout action
-    login();
+    // Call the login action with email and password
+    redirectToLogin();
+    // login('user@example.com', 'password');
+    onClose();
+  };
+
+  const handleLogout = () => {
+    // logout();
+    init();
     onClose();
   };
 
@@ -66,4 +75,4 @@ const mapStateToProps = (state) => ({
   user: state.authx.user || state.signup.user
 });
 
-export default connect(mapStateToProps, { login, logout })(DrawerMenu);
+export default connect(mapStateToProps, { login, logout, init })(DrawerMenu);

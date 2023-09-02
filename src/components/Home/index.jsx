@@ -35,7 +35,7 @@ const HomePage = ({ userRepository, action }) => {
         } icon={<CameraAltIcon sx={{ fontSize: 72 }} />}>
 
         </Tile>
-        <Tile onClick={handleManualAdd} post={
+        {/* <Tile onClick={handleManualAdd} post={
           {
             // date: 'Manually Add Your (First) Receipt',
             description: 'Manually Add Your (First) Receipt',
@@ -47,7 +47,7 @@ const HomePage = ({ userRepository, action }) => {
           icon={<EditNoteIcon sx={{ fontSize: 72 }} />}
         >
           Manually Add Your (First) Receipt
-        </Tile>
+        </Tile> */}
       </div>
     </div>
   );

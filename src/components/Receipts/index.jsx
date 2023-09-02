@@ -151,7 +151,8 @@ const Receipts = ({ isLoggedIn }) => {
 };
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.authx.isLoggedIn
+  isLoggedIn: state.authx.isLoggedIn || state.signup.isLoggedIn,
+  user: state.authx.user || state.signup.user
 });
 
 export default connect(mapStateToProps, {})(Receipts);

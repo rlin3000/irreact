@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,6 +13,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Routes, Route, useNavigate, Link as RouterLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signup, init } from '../../redux/actions/signupActions';
+import { CircularProgress, Modal } from '@mui/material';
 
 
 function Copyright(props) {
@@ -32,7 +35,26 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
+function SignUp({ isLoggedIn, user, signup, init, error }) {
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false);
+  };
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setIsLoading(false);
+    if (isLoggedIn) {
+      navigate('/', { replace: true });
+    }
+    if (error) {
+      console.log(error);
+      setIsErrorModalOpen(true);
+    }
+  }, [isLoggedIn, error]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -40,6 +62,9 @@ export default function SignUp() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    signup(data.get('email'), data.get('password'));
+    setIsLoading(true);
+    init();
   };
 
   return (
@@ -127,9 +152,30 @@ export default function SignUp() {
               </Grid>
             </Grid>
           </Box>
+          <Modal open={isLoading}>
+            <div className="modal-content">
+              <CircularProgress />
+            </div>
+          </Modal>
+
+          <Modal open={isErrorModalOpen}>
+            <div className="modal-content">
+              <h2>Error</h2>
+              <p>{error ? `${error}` : 'An error occurred.'}</p>
+              <Button onClick={closeErrorModal}>Close</Button>
+            </div>
+          </Modal>
         </Box>
         <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
   );
 }
+
+const mapStateToProps = (state) => ({
+  isLoggedIn: state.signup.isLoggedIn,
+  user: state.signup.user,
+  error: state.signup.error
+});
+
+export default connect(mapStateToProps, { signup, init })(SignUp)

@@ -6,7 +6,7 @@ export const api = createApi({
       baseUrl: 'https://irwebapp.azurewebsites.net',
       prepareHeaders: (headers, { getState }) => {
         // Get the access token from Redux state (assuming you've stored it there)
-        const accessToken = getState().authx.user?.accessToken;
+        const accessToken = getState().authx.user?.accessToken || getState().signup.user?.accessToken;
 
         // If the access token exists, add the Authorization header
         if (accessToken) {

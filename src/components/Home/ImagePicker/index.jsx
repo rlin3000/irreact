@@ -289,8 +289,8 @@ function ImagePicker({user}) {
 }
 
 const mapStateToProps = (state) => ({
-  isLoggedIn: state.authx.isLoggedIn,
-  user: state.authx.user
+  isLoggedIn: state.authx.isLoggedIn || state.signup.isLoggedIn,
+  user: state.authx.user || state.signup.user
 });
 
 export default connect(mapStateToProps, { })(ImagePicker);

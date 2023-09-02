@@ -6,7 +6,7 @@
 // import firebase from 'firebase';
 
 import auth from './firebase'
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 // Function to save login state and user data in local storage
 const saveUserDataToLocalStorage = (user) => {
@@ -20,11 +20,11 @@ const removeUserDataFromLocalStorage = () => {
   localStorage.removeItem('user');
 };
 
-export const login = (email, password) => async (dispatch) => {
+export const signup = (email, password) => async (dispatch) => {
   try {
     // Use Firebase's authentication API to log in
-    // const user = await firebase.auth().signInWithEmailAndPassword(email, password);
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    // const user = await firebase.auth().createUserWithEmailAndPassword(email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     console.log(userCredential.user.accessToken)
     console.log(userCredential.user.email)
 
@@ -34,27 +34,15 @@ export const login = (email, password) => async (dispatch) => {
     saveUserDataToLocalStorage(user);
 
     dispatch({
-      type: 'LOGIN_SUCCESS',
+      type: 'SIGNUP_SUCCESS',
       payload: user,
     });
   } catch (error) {
     // Handle login error
     dispatch({
-      type: 'LOGIN_FAILED',
+      type: 'SIGNUP_FAILED',
       payload: error.code
     });
-  }
-};
-
-export const logout = () => async (dispatch) => {
-  try {
-    // Use Firebase's authentication API to log out
-    // await firebase.auth().signOut();
-    removeUserDataFromLocalStorage();
-
-    dispatch({ type: 'LOGOUT_SUCCESS' });
-  } catch (error) {
-    // Handle logout error
   }
 };
 

@@ -107,7 +107,7 @@ const Receipts = ({ isLoggedIn }) => {
                               title={item.totalAmount === 0 ? 'Free Stay' : '$' + item.totalAmount}
                               actionIcon={
                                 <Tooltip title={item.companyName} sx={{ mr: '5px' }}>
-                                  <Avatar src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`} />
+                                  <Avatar src={`https://api.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`} />
                                 </Tooltip>
                               }
                               position="top"

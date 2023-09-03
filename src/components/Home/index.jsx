@@ -5,14 +5,11 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import { useNavigate } from 'react-router-dom';
 
-const HomePage = ({ userRepository, action }) => {
-  const [mainScreenBloc, setMainScreenBloc] = useState(); // Replace this with your preferred state management library
+const HomePage = () => {
 
   const navigate = useNavigate();
 
   const selectImage = async () => {
-    console.log('Image selected')
-
     navigate('/camera/', { replace: true });
   };
 

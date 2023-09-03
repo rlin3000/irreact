@@ -14,11 +14,13 @@ import { PhotoCamera } from '@mui/icons-material';
 
 import CardActionArea from '@mui/material/CardActionArea';
 import { useNavigate } from 'react-router-dom';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
+import { CircularProgress, Modal } from '@mui/material';
+import { useUploadReceiptMutation } from '../../../datamodel/rtkQuerySlice';
 
 
-const ServiceBaseUrl = "https://api.ireceipts.au:443/";
-const UploadReceiptImages = ServiceBaseUrl + "Receipt/UploadReceiptImages/0";
+// const ServiceBaseUrl = "https://api.ireceipts.au:443/";//
+// const UploadReceiptImages = ServiceBaseUrl + "Receipt/UploadReceiptImages/0";//
 
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
@@ -36,7 +38,11 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   );
 }
 
-function ImagePicker({user}) {
+function ImagePicker({ user }) {
+  const [uploadReceipt, { data, error, isLoading, isSuccess, isError }] = useUploadReceiptMutation();
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
   const [imgSrc, setImgSrc] = useState('');
   const previewCanvasRef = useRef(null);
   const imgRef = useRef(null);
@@ -144,60 +150,68 @@ function ImagePicker({user}) {
         resolve(blob);
       });
     });
-    try {
-      
-      const headers = new Headers();
-      headers.append("api-version", getAPIVersion());
-      const accessToken = user?.accessToken;
+    // try {
 
-      // If the access token exists, add the Authorization header
-      if (accessToken) {
-        headers.set('Authorization', `Bearer ${accessToken}`);
+    // const headers = new Headers();//
+    // headers.append("api-version", getAPIVersion());//
+    // const accessToken = user?.accessToken;//
+
+    // If the access token exists, add the Authorization header
+    // if (accessToken) {//
+    //   headers.set('Authorization', `Bearer ${accessToken}`);//
+    // }//
+
+    const file = new File([blob], "receipt.png", {
+      type: blob.type,
+    });
+
+    console.log('file is ', file);
+
+    const formData = new FormData();
+    formData.append("file", file, file.name);
+
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: headers,
+    //   body: formData
+    // };
+    uploadReceipt(formData).unwrap().then(
+      () => {
+        setIsSuccessModalOpen(true);
+        console.log(`${isSuccess} and ${data}`);
       }
-      // headers.append("Authorization", "Bearer " + token);
+    ).catch((error) => {
+      setIsErrorModalOpen(true); // Open error modal
+    });
 
-      const file = new File([blob], "receipt.png", {
-        type: blob.type,
-      });
-
-      console.log('file is ', file);
-
-      const formData = new FormData();
-      formData.append("file", file, file.name);
-
-      const requestOptions = {
-        method: "POST",
-        headers: headers,
-        body: formData
-      };
-
-      const response = await fetch(UploadReceiptImages, requestOptions);
-      console.log(response.status);
-      if (response.status === 200) {
-        const data = await response.json();
-        console.log('data is ', data);
-        return data;
-      } else {
-        // Log an error
-        return {
-          msgCode: response.status,
-          msg: "HTTP response code: " + response.status.toString(),
-        }
-      }
-    } catch (error) {
-      if (error.name === "TimeoutError") {
-        return {
-          msgCode: 9000,
-          msg: "Time out!",
-        }
-      } else {
-        // Log an error
-        return {
-          msgCode: -1,
-          msg: error.toString(),
-        }
-      }
-    }
+    //   const response = await fetch(UploadReceiptImages, requestOptions);
+    //   console.log(response.status);
+    //   if (response.status === 200) {
+    //     const data = await response.json();
+    //     console.log('data is ', data);
+    //     return data;
+    //   } else {
+    //     // Log an error
+    //     return {
+    //       msgCode: response.status,
+    //       msg: "HTTP response code: " + response.status.toString(),
+    //     }
+    //   }
+    // }
+    // } catch (error) {
+    //   if (error.name === "TimeoutError") {
+    //     return {
+    //       msgCode: 9000,
+    //       msg: "Time out!",
+    //     }
+    //   } else {
+    //     // Log an error
+    //     return {
+    //       msgCode: -1,
+    //       msg: error.toString(),
+    //     }
+    //   }
+    // }
 
     // // Replace 'yourApiEndpoint' with the appropriate API endpoint
     // const response = await uploadFile(UploadReceiptImages, 'yourToken', file);
@@ -212,6 +226,15 @@ function ImagePicker({user}) {
     //   // Image upload failed
     //   // ...
     // }
+  };
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false);
+  };
+
+  const closeSuccessModal = () => {
+    setIsSuccessModalOpen(false);
+    navigate('/receipts/', { state: { updateSuccess: true }, replace: true });
   };
 
   return (
@@ -251,6 +274,27 @@ function ImagePicker({user}) {
           </div>
           <Button onClick={handleCancel}>Cancel</Button>
         </Box>
+        <Modal open={isLoading}>
+          <div className="modal-content">
+            <CircularProgress />
+          </div>
+        </Modal>
+
+        <Modal open={isErrorModalOpen}>
+          <div className="modal-content">
+            <h2>Error</h2>
+            <p>{isError ? `${error.status} ${JSON.stringify(error.data)}` : 'An error occurred.'}</p>
+            <Button onClick={closeErrorModal}>Close</Button>
+          </div>
+        </Modal>
+
+        <Modal open={isSuccessModalOpen}>
+          <div className="modal-content">
+            <h2>Success</h2>
+            <p>'Receipt Uploaded Successfully'</p>
+            <Button onClick={closeSuccessModal}>Close</Button>
+          </div>
+        </Modal>
       </div>
       {!!imgSrc && (
         <ReactCrop
@@ -293,5 +337,5 @@ const mapStateToProps = (state) => ({
   user: state.authx.user || state.signup.user
 });
 
-export default connect(mapStateToProps, { })(ImagePicker);
+export default connect(mapStateToProps, {})(ImagePicker);
 

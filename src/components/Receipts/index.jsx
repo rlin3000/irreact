@@ -104,7 +104,7 @@ const Receipts = ({ isLoggedIn }) => {
                                 background:
                                   'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)',
                               }}
-                              title={item.totalAmount === 0 ? 'Free Stay' : '$' + item.totalAmount}
+                              title={item.totalAmount === 0 ? '$0' : '$' + item.totalAmount}
                               actionIcon={
                                 <Tooltip title={item.companyName} sx={{ mr: '5px' }}>
                                   <Avatar src={`https://api.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`} />

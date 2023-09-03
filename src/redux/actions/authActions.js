@@ -58,13 +58,13 @@ export const logout = () => async (dispatch) => {
   }
 };
 
-export const init = () => async (dispatch) => {
+export const authInit = () => async (dispatch) => {
   try {
     // Use Firebase's authentication API to log out
     // await firebase.auth().signOut();
     removeUserDataFromLocalStorage();
 
-    dispatch({ type: 'INIT' });
+    dispatch({ type: 'AUTHINIT' });
   } catch (error) {
     // Handle logout error
   }

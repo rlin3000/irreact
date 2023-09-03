@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { connect } from 'react-redux';
-import { login, init } from '../../redux/actions/authActions';
+import { login, authInit } from '../../redux/actions/authActions';
 import { Routes, Route, useNavigate, Link as RouterLink } from 'react-router-dom';
 import { CircularProgress, Modal } from '@mui/material';
 
@@ -36,7 +36,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-function SignIn({ isLoggedIn, user, login, init, error }) {
+function SignIn({ isLoggedIn, user, login, authInit, error }) {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,7 +67,7 @@ function SignIn({ isLoggedIn, user, login, init, error }) {
 
     login(data.get('email'), data.get('password'));
     setIsLoading(true);
-    init();
+    authInit();
 
   };
 
@@ -161,4 +161,4 @@ const mapStateToProps = (state) => ({
   error: state.authx.error
 });
 
-export default connect(mapStateToProps, { login, init })(SignIn)
+export default connect(mapStateToProps, { login, authInit })(SignIn)

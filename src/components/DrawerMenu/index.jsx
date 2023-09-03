@@ -10,9 +10,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import SettingsIcon from '@mui/icons-material/Settings';
 
-import { login, logout, init } from '../../redux/actions/authActions';
+import { login, logout, authInit } from '../../redux/actions/authActions';
+import { signupInit } from '../../redux/actions/signupActions';
 
-const DrawerMenu = ({ open, onClose, user, isLoggedIn, login, logout, init }) => {
+
+const DrawerMenu = ({ open, onClose, user, isLoggedIn, login, logout, authInit, signupInit }) => {
 
   const navigate = useNavigate();
 
@@ -29,7 +31,8 @@ const DrawerMenu = ({ open, onClose, user, isLoggedIn, login, logout, init }) =>
 
   const handleLogout = () => {
     // logout();
-    init();
+    authInit();
+    signupInit();
     onClose();
   };
 
@@ -75,4 +78,4 @@ const mapStateToProps = (state) => ({
   user: state.authx.user || state.signup.user
 });
 
-export default connect(mapStateToProps, { login, logout, init })(DrawerMenu);
+export default connect(mapStateToProps, { login, logout, authInit, signupInit })(DrawerMenu);

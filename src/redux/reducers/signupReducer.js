@@ -20,7 +20,7 @@ export default function signupReducer(state = initialState, action) {
                 error: action.payload,
                 isLoggedIn: false,
             };
-        case 'INIT':
+        case 'SIGNUPINIT':
             return {
                 ...initialState
             };

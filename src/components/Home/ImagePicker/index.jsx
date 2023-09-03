@@ -175,14 +175,19 @@ function ImagePicker({ user }) {
     //   headers: headers,
     //   body: formData
     // };
-    uploadReceipt(formData).unwrap().then(
-      () => {
-        setIsSuccessModalOpen(true);
-        console.log(`${isSuccess} and ${data}`);
-      }
-    ).catch((error) => {
-      setIsErrorModalOpen(true); // Open error modal
-    });
+    if (user) {
+      uploadReceipt(formData).unwrap().then(
+        () => {
+          setIsSuccessModalOpen(true);
+          console.log(`${isSuccess} and ${data}`);
+        }
+      ).catch((error) => {
+        setIsErrorModalOpen(true); // Open error modal
+      });
+    } else {
+      navigate('/login/', { replace: true });
+
+    }
 
     //   const response = await fetch(UploadReceiptImages, requestOptions);
     //   console.log(response.status);
@@ -234,7 +239,7 @@ function ImagePicker({ user }) {
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate('/receipts/', { state: { updateSuccess: true }, replace: true });
+    navigate('/receipts/', { state: { updateSuccess: true } });
   };
 
   return (

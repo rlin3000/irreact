@@ -18,11 +18,12 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import BottomTabs from './components/BottomTabs';
-import { login, logout, init } from './redux/actions/authActions'
+import { login, logout, authInit } from './redux/actions/authActions'
+import { signupInit } from './redux/actions/signupActions';
 import ImagePicker from './components/Home/ImagePicker';
 import SignUp from './components/Signup';
 
-const App = ({ isLoggedIn, user, login, logout, init }) => {
+const App = ({ isLoggedIn, user, login, logout, authInit, signupInit }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -43,7 +44,8 @@ const App = ({ isLoggedIn, user, login, logout, init }) => {
 
   const handleLogout = () => {
     // logout();
-    init();
+    authInit();
+    signupInit();
   };
 
   return (
@@ -118,4 +120,4 @@ const mapStateToProps = (state) => ({
   user: state.authx.user || state.signup.user
 });
 
-export default connect(mapStateToProps, { login, logout, init })(App)
+export default connect(mapStateToProps, { login, logout, authInit, signupInit })(App)

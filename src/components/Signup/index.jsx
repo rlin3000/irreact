@@ -14,7 +14,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Routes, Route, useNavigate, Link as RouterLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { signup, init } from '../../redux/actions/signupActions';
+import { signup, signupInit } from '../../redux/actions/signupActions';
 import { CircularProgress, Modal } from '@mui/material';
 
 
@@ -35,7 +35,7 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-function SignUp({ isLoggedIn, user, signup, init, error }) {
+function SignUp({ isLoggedIn, user, signup, signupInit, error }) {
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -64,7 +64,7 @@ function SignUp({ isLoggedIn, user, signup, init, error }) {
     });
     signup(data.get('email'), data.get('password'));
     setIsLoading(true);
-    init();
+    signupInit();
   };
 
   return (
@@ -178,4 +178,4 @@ const mapStateToProps = (state) => ({
   error: state.signup.error
 });
 
-export default connect(mapStateToProps, { signup, init })(SignUp)
+export default connect(mapStateToProps, { signup, signupInit })(SignUp)

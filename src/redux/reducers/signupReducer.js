@@ -22,7 +22,9 @@ export default function signupReducer(state = initialState, action) {
             };
         case 'SIGNUPINIT':
             return {
-                ...initialState
+                user: null,
+                isLoggedIn: false,
+                error: null
             };
         default:
             return state;

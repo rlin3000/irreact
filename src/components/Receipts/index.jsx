@@ -16,6 +16,11 @@ import ListSubheader from '@mui/material/ListSubheader';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import Button from '@mui/material/Button';
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 import {
   Avatar,
@@ -121,15 +126,18 @@ const Receipts = ({ isLoggedIn }) => {
                             <ImageListItemBar
                               title={item.companyName}
                               actionIcon={
-                                <Rating
-                                  sx={{ color: 'rgba(255,255,255, 0.8)', mr: '5px' }}
-                                  name="item-rating"
-                                  defaultValue={3.5}
-                                  precision={0.5}
-                                  emptyIcon={
-                                    <StarBorder sx={{ color: 'rgba(255,255,255, 0.8)' }} />
-                                  }
-                                />
+                                // <Rating
+                                //   sx={{ color: 'rgba(255,255,255, 0.8)', mr: '5px' }}
+                                //   name="item-rating"
+                                //   defaultValue={3.5}
+                                //   precision={0.5}
+                                //   emptyIcon={
+                                //     <StarBorder sx={{ color: 'rgba(255,255,255, 0.8)' }} />
+                                //   }
+                                // />
+                                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                    <MobileDatePicker value={dayjs(item.receiptDatetime)} readOnly />
+                                </LocalizationProvider>
                               }
                             />
                           </ImageListItem>

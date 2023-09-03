@@ -28,7 +28,9 @@ export default function authReducer(state = initialState, action) {
             };
         case 'AUTHINIT':
             return {
-                ...initialState
+                user: null,
+                isLoggedIn: false,
+                error: null
             };
         default:
             return state;

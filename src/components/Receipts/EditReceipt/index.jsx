@@ -69,7 +69,7 @@ export default function EditReceipt() {
     console.log(receiptData);
 
     if ((date.isSame(dayjs(item?.receiptDatetime))) && amount === item?.totalAmount && name === item?.companyName) {
-      navigate('/receipts/', { replace: true });
+      navigate('/receipts', { replace: true });
     } else {
       updateReceipt(receiptData).unwrap().then(
         () => {
@@ -87,11 +87,11 @@ export default function EditReceipt() {
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate('/receipts/', { state: { updateSuccess: true }, replace: true });
+    navigate('/receipts', { state: { updateSuccess: true }, replace: true });
   };
 
   const handleCancel = async () => {
-    navigate('/receipts/', { replace: true });
+    navigate('/receipts', { replace: true });
   };
 
   const [date, setDate] = React.useState(dayjs(item?.receiptDatetime));

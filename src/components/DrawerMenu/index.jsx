@@ -19,7 +19,7 @@ const DrawerMenu = ({ open, onClose, user, isLoggedIn, login, logout, authInit, 
   const navigate = useNavigate();
 
   const redirectToLogin = () => {
-    navigate('/login/', { replace: true });
+    navigate('/login', { replace: true });
   };
 
   const handleLogin = () => {

@@ -10,7 +10,7 @@ const HomePage = () => {
   const navigate = useNavigate();
 
   const selectImage = async () => {
-    navigate('/camera/', { replace: true });
+    navigate('/camera', { replace: true });
   };
 
   const handleManualAdd = async () => {

@@ -185,7 +185,7 @@ function ImagePicker({ user }) {
         setIsErrorModalOpen(true); // Open error modal
       });
     } else {
-      navigate('/login/', { replace: true });
+      navigate('/login', { replace: true });
 
     }
 
@@ -239,7 +239,7 @@ function ImagePicker({ user }) {
 
   const closeSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    navigate('/receipts/', { state: { updateSuccess: true } });
+    navigate('/receipts', { state: { updateSuccess: true } });
   };
 
   return (

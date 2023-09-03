@@ -65,7 +65,7 @@ const Receipts = ({ isLoggedIn }) => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    navigate('/login/', { replace: true });
+    navigate('/login', { replace: true });
   };
 
   if (!isLoggedIn) {
@@ -74,7 +74,7 @@ const Receipts = ({ isLoggedIn }) => {
 
   const onReceiptClick = (item) => {
     console.log('Receipt Clicked');
-    navigate('/edit/', { state: { item }, replace: true });
+    navigate('/edit', { state: { item }, replace: true });
   };
 
 

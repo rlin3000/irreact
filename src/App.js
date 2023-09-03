@@ -33,7 +33,7 @@ const App = ({ isLoggedIn, user, login, logout, authInit, signupInit }) => {
   const navigate = useNavigate();
 
   const redirectToLogin = () => {
-    navigate('/login/', { replace: true });
+    navigate('/login', { replace: true });
   };
 
   const handleLogin = () => {

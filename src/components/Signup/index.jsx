@@ -22,8 +22,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://ireceipts.au/">
+        https://ireceipts.au/
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -45,11 +45,12 @@ function SignUp({ isLoggedIn, user, signup, signupInit, error }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(false);
     if (isLoggedIn) {
+      setIsLoading(false);
       navigate('/', { replace: true });
     }
     if (error) {
+      setIsLoading(false);
       console.log(error);
       setIsErrorModalOpen(true);
     }
@@ -62,9 +63,9 @@ function SignUp({ isLoggedIn, user, signup, signupInit, error }) {
       email: data.get('email'),
       password: data.get('password'),
     });
+    signupInit();
     signup(data.get('email'), data.get('password'));
     setIsLoading(true);
-    signupInit();
   };
 
   return (

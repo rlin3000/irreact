@@ -40,6 +40,8 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
 
 function ImagePicker({ user }) {
   const [uploadReceipt, { data, error, isLoading, isSuccess, isError }] = useUploadReceiptMutation();
+  
+  const [isProgressing, setIsProgressing] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
 
@@ -140,6 +142,9 @@ function ImagePicker({ user }) {
   }
 
   const handleConfirmClick = async () => {
+
+    setIsProgressing(true);
+
     if (!previewCanvasRef.current) {
       return;
     }
@@ -178,16 +183,22 @@ function ImagePicker({ user }) {
     if (user) {
       uploadReceipt(formData).unwrap().then(
         () => {
+          setIsProgressing(false);
+
           setIsSuccessModalOpen(true);
           console.log(`${isSuccess} and ${data}`);
         }
       ).catch((error) => {
+        setIsProgressing(false);
+
         setIsErrorModalOpen(true); // Open error modal
       });
     } else {
       navigate('/login', { replace: true });
 
     }
+
+
 
     //   const response = await fetch(UploadReceiptImages, requestOptions);
     //   console.log(response.status);
@@ -279,7 +290,7 @@ function ImagePicker({ user }) {
           </div>
           <Button onClick={handleCancel}>Cancel</Button>
         </Box>
-        <Modal open={isLoading}>
+        <Modal open={isProgressing}>
           <div className="modal-content">
             <CircularProgress />
           </div>

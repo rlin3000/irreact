@@ -27,7 +27,7 @@ const HomePage = () => {
             description: 'Snap Your (First) Receipt',
             // image: 'image',
             // imageLabel: 'imageLabel',
-            title: 'Snap Your (First) Receipt'
+            title: 'Please Snap Your Receipt'
           }
         } icon={<CameraAltIcon sx={{ fontSize: 72 }} />}>
 

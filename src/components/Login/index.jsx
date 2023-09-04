@@ -23,8 +23,8 @@ function Copyright(props) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://ireceipts.au/">
+        https://ireceipts.au/
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -123,11 +123,11 @@ function SignIn({ isLoggedIn, user, login, authInit, error }) {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
                 <RouterLink to="/signup" variant="body2">
                   {"Don't have an account? Please Sign Up"}

@@ -5,7 +5,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 
-import { login, logout } from '../../redux/actions/authActions';//done
+import { login, logout, authInit } from '../../redux/actions/authActions';//done
+import { signupInit } from '../../redux/actions/signupActions';
 
 import { useGetReceiptsQuery } from '../../datamodel/rtkQuerySlice';
 
@@ -36,7 +37,7 @@ import {
 import { StarBorder } from '@mui/icons-material';
 
 
-const Receipts = ({ isLoggedIn }) => {
+const Receipts = ({ isLoggedIn, authInit, signupInit }) => {
 
   const location = useLocation();
 
@@ -65,6 +66,8 @@ const Receipts = ({ isLoggedIn }) => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
+    authInit();
+    signupInit();
     navigate('/login', { replace: true });
   };
 
@@ -118,7 +121,7 @@ const Receipts = ({ isLoggedIn }) => {
                               position="top"
                             />
                             <img
-                              src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
+                              src={`https://api.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
                               alt={item.companyName}
                               loading="lazy"
                               style={{ cursor: 'pointer' }}
@@ -163,5 +166,5 @@ const mapStateToProps = (state) => ({
   user: state.authx.user || state.signup.user
 });
 
-export default connect(mapStateToProps, {})(Receipts);
+export default connect(mapStateToProps, {authInit, signupInit})(Receipts);
 

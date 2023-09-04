@@ -138,7 +138,7 @@ export default function EditReceipt() {
             <Card>
               <ImageListItem sx={{ height: '100% !important' }}>
                 <img
-                  src={`https://www.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
+                  src={`https://api.ireceipts.au/Receipt/GetImage/${encodeURIComponent(item.imagePath)}`}
                   alt={item.companyName}
                   loading="lazy"
                 // style={{ cursor: 'pointer' }}

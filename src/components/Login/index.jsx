@@ -47,15 +47,18 @@ function SignIn({ isLoggedIn, user, login, authInit, error }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setIsLoading(false);
     if (isLoggedIn) {
+      setIsLoading(false);
+
       navigate('/', { replace: true });
     }
     if (error) {
+      setIsLoading(false);
+
       console.log(error);
       setIsErrorModalOpen(true);
     }
-  },[isLoggedIn, error]);
+  }, [isLoggedIn, error]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -64,10 +67,9 @@ function SignIn({ isLoggedIn, user, login, authInit, error }) {
       email: data.get('email'),
       password: data.get('password'),
     });
-
+    authInit();
     login(data.get('email'), data.get('password'));
     setIsLoading(true);
-    authInit();
 
   };
 

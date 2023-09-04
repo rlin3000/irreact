@@ -307,7 +307,7 @@ function ImagePicker({ user }) {
         <Modal open={isSuccessModalOpen}>
           <div className="modal-content">
             <h2>Success</h2>
-            <p>'Receipt Uploaded Successfully'</p>
+            <p>Receipt Uploaded Successfully</p>
             <Button onClick={closeSuccessModal}>Close</Button>
           </div>
         </Modal>

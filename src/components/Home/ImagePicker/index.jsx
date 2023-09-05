@@ -18,10 +18,6 @@ import { connect } from 'react-redux';
 import { CircularProgress, Modal } from '@mui/material';
 import { useUploadReceiptMutation } from '../../../datamodel/rtkQuerySlice';
 
-
-// const ServiceBaseUrl = "https://api.ireceipts.au:443/";//
-// const UploadReceiptImages = ServiceBaseUrl + "Receipt/UploadReceiptImages/0";//
-
 function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
   return centerCrop(
     makeAspectCrop(
@@ -161,16 +157,6 @@ function ImagePicker({ user }) {
         resolve(blob);
       });
     });
-    // try {
-
-    // const headers = new Headers();//
-    // headers.append("api-version", getAPIVersion());//
-    // const accessToken = user?.accessToken;//
-
-    // If the access token exists, add the Authorization header
-    // if (accessToken) {//
-    //   headers.set('Authorization', `Bearer ${accessToken}`);//
-    // }//
 
     const file = new File([blob], "receipt.png", {
       type: blob?.type,
@@ -181,11 +167,6 @@ function ImagePicker({ user }) {
     const formData = new FormData();
     formData.append("file", file, file.name);
 
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: headers,
-    //   body: formData
-    // };
     if (user) {
       uploadReceipt(formData).unwrap().then(
         () => {
@@ -203,51 +184,6 @@ function ImagePicker({ user }) {
       navigate('/login', { replace: true });
 
     }
-
-
-
-    //   const response = await fetch(UploadReceiptImages, requestOptions);
-    //   console.log(response.status);
-    //   if (response.status === 200) {
-    //     const data = await response.json();
-    //     console.log('data is ', data);
-    //     return data;
-    //   } else {
-    //     // Log an error
-    //     return {
-    //       msgCode: response.status,
-    //       msg: "HTTP response code: " + response.status.toString(),
-    //     }
-    //   }
-    // }
-    // } catch (error) {
-    //   if (error.name === "TimeoutError") {
-    //     return {
-    //       msgCode: 9000,
-    //       msg: "Time out!",
-    //     }
-    //   } else {
-    //     // Log an error
-    //     return {
-    //       msgCode: -1,
-    //       msg: error.toString(),
-    //     }
-    //   }
-    // }
-
-    // // Replace 'yourApiEndpoint' with the appropriate API endpoint
-    // const response = await uploadFile(UploadReceiptImages, 'yourToken', file);
-
-    // // Handle the response
-    // if (response.success) {
-    //   console.log(response);
-    //   // Image upload successful
-    //   // ...
-    // } else {
-    //   console.log(response);
-    //   // Image upload failed
-    //   // ...
-    // }
   };
 
   const closeErrorModal = () => {
@@ -360,4 +296,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {})(ImagePicker);
-

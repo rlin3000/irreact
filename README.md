@@ -1,6 +1,6 @@
 # This is a SPA for taking photos of receipts, decoding them, and managing them
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Please visit https://ireceipts.au
 
 ## Available Scripts
 

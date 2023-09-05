@@ -40,7 +40,7 @@ function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
 
 function ImagePicker({ user }) {
   const [uploadReceipt, { data, error, isLoading, isSuccess, isError }] = useUploadReceiptMutation();
-  
+
   const [isProgressing, setIsProgressing] = useState(false);
   const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
@@ -63,8 +63,14 @@ function ImagePicker({ user }) {
   }
 
   useEffect(() => {
-    // Programmatically trigger the click event of the file input
-    fileInputRef.current.click();
+    // Programmatically trigger the click event of the file input with a slight delay
+    let timeout = setTimeout(() => {
+      fileInputRef.current.click();
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout)
+    }
   }, []);
 
   function onSelectFile(e) {
@@ -167,7 +173,7 @@ function ImagePicker({ user }) {
     // }//
 
     const file = new File([blob], "receipt.png", {
-      type: blob.type,
+      type: blob?.type,
     });
 
     console.log('file is ', file);

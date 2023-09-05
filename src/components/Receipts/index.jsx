@@ -71,10 +71,6 @@ const Receipts = ({ isLoggedIn, authInit, signupInit }) => {
     navigate('/login', { replace: true });
   };
 
-  if (!isLoggedIn) {
-    return <div>Not logged in yet and please <Button color="primary" onClick={handleLogin}>Log In</Button></div>
-  }
-
   const onReceiptClick = (item) => {
     console.log('Receipt Clicked');
     navigate('/edit', { state: { item }, replace: true });
@@ -139,7 +135,7 @@ const Receipts = ({ isLoggedIn, authInit, signupInit }) => {
                                 //   }
                                 // />
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                    <MobileDatePicker value={dayjs(item.receiptDatetime)} readOnly />
+                                  <MobileDatePicker value={dayjs(item.receiptDatetime)} readOnly />
                                 </LocalizationProvider>
                               }
                             />
@@ -154,8 +150,7 @@ const Receipts = ({ isLoggedIn, authInit, signupInit }) => {
           </div>
         </>
       ) : (
-        <>
-        </>
+        <div>Not logged in yet and please <Button color="primary" onClick={handleLogin}>Log In</Button></div>
       )}
     </div>
   )
